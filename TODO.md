@@ -8,7 +8,8 @@
 - [ ] Delete a task
 
 ## Post-MVP
-- [ ] Filter a task
 - [ ] Filter tasks by status
 - [ ] Count of pending tasks
-- [ ] Clear finished tasks
+- [ ] Clear completed tasks
+- [ ] Add level of priority in tasks
+- [ ] Add date fields to tasks (CreatedAt, DueDate, CompletedAt)
