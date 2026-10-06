@@ -480,3 +480,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# DB Browser for SQLite project files
+*.sqbpro
+*.sqbpro-journal
