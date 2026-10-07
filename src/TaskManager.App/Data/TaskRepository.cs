@@ -1,5 +1,6 @@
 namespace TaskManager.App.Data;
 
+using TaskManager.App.Models;
 using Microsoft.Data.Sqlite;
 
 public class TaskRepository
@@ -8,7 +9,7 @@ public class TaskRepository
 
     public TaskRepository()
     {
-        _connectionString = "Data Source=data/tasks.db";
+        _connectionString = "Data Source = dataBase/tasks.db";
     }
     
     public void CreateTableIfNotExists()
@@ -29,5 +30,7 @@ public class TaskRepository
         }
         
     }
+
+
 }
  

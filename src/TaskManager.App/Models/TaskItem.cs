@@ -1,6 +1,6 @@
 namespace TaskManager.App.Models;
 
-public class Task
+public class TaskItem
 {
     //properties
     public int Id { get; set; }

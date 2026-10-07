@@ -11,6 +11,8 @@ namespace TaskManager.App
             //main program here
             var repository = new TaskRepository();
             repository.CreateTableIfNotExists();
+
+        
         }
     }
 }
