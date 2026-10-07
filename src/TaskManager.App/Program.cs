@@ -17,7 +17,15 @@ namespace TaskManager.App
               Title = "Buy milk",
               Description = "Go to the store buy milk"
             };
-            repository.AddTask(task);
+            //repository.AddTask(task);
+
+            var tasks = repository.GetAllTasks();
+            Console.WriteLine("These are your tasks:\n");
+            foreach(var t in tasks)
+            {
+                Console.WriteLine($"Id- {t.Id} - {t.Title}\nDescription: {t.Description}\n");
+            }
+
         }
     }
 }

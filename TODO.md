@@ -3,7 +3,7 @@
 ## MVP
 - [x] Create task table in sqlite
 - [x] Add a task
-- [ ] List all tasks
+- [x] List all tasks
 - [ ] Mark task as done
 - [ ] Delete a task
 

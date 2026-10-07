@@ -45,5 +45,33 @@ public class TaskRepository
             addCommand.ExecuteNonQuery();
         }
     }
+
+    public List<TaskItem> GetAllTasks()
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var getAllCommand = new SqliteCommand();
+            getAllCommand.Connection = connection;
+            getAllCommand.CommandText = "SELECT * FROM Tasks ORDER BY Id DESC";
+            using var reader = getAllCommand.ExecuteReader(); 
+
+            var tasks = new List<TaskItem>();
+
+            while (reader.Read())
+            {
+                TaskItem taskItem = new TaskItem()
+                {
+                  Id = reader.GetInt32(0),
+                  Title = reader.GetString(1),
+                  Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                  Status = reader.GetInt32(3)
+                };
+
+                tasks.Add(taskItem);
+            }
+            return tasks;
+        }
+    }
 }
  
