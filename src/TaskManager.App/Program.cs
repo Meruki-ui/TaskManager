@@ -20,7 +20,7 @@ namespace TaskManager.App
               Title = "Buy milk",
               Description = "Go to the store buy milk"
             };
-            //repository.AddTask(task);
+            repository.AddTask(task);
 
             //test for the display of getalltasks method
             var tasks = repository.GetAllTasks();
@@ -35,6 +35,9 @@ namespace TaskManager.App
             {
                 repository.MarkAsDone(tasks[0].Id);
             }
+
+            //testing deleteTask method
+            repository.DeleteTask(tasks[1].Id);
 
             //calling get all tasks again to test if markasdone is working
             tasks = repository.GetAllTasks();

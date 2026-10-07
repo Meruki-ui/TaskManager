@@ -87,5 +87,19 @@ public class TaskRepository
             markDoneCommand.ExecuteNonQuery();
         }
     }
+
+    public void DeleteTask(int id)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var deleteTaskCommand = new SqliteCommand();
+            deleteTaskCommand.Connection = connection;
+            deleteTaskCommand.CommandText = "DELETE FROM Tasks WHERE Id = $id";
+
+            deleteTaskCommand.Parameters.AddWithValue("$id", id);
+            deleteTaskCommand.ExecuteNonQuery();
+        }
+    }
 }
  
