@@ -31,6 +31,19 @@ public class TaskRepository
         
     }
 
-
+    public void AddTask(TaskItem task)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var addCommand = new SqliteCommand();
+            addCommand.Connection = connection;
+            addCommand.CommandText = "INSERT INTO Tasks (Title, Description) VALUES ($title, $description)";
+            
+            addCommand.Parameters.AddWithValue("$title", task.Title);
+            addCommand.Parameters.AddWithValue("$description", task.Description);
+            addCommand.ExecuteNonQuery();
+        }
+    }
 }
  

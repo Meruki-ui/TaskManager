@@ -12,7 +12,12 @@ namespace TaskManager.App
             var repository = new TaskRepository();
             repository.CreateTableIfNotExists();
 
-        
+            var task = new TaskItem()
+            {
+              Title = "Buy milk",
+              Description = "Go to the store buy milk"
+            };
+            repository.AddTask(task);
         }
     }
 }
