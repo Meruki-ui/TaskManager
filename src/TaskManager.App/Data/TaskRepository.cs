@@ -73,5 +73,19 @@ public class TaskRepository
             return tasks;
         }
     }
+
+    public void MarkAsDone(int id)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var markDoneCommand = new SqliteCommand();
+            markDoneCommand.Connection = connection;
+            markDoneCommand.CommandText = "UPDATE Tasks SET Status = 2 WHERE Id = $id";
+
+            markDoneCommand.Parameters.AddWithValue("$id", id);
+            markDoneCommand.ExecuteNonQuery();
+        }
+    }
 }
  
