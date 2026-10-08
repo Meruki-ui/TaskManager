@@ -9,42 +9,26 @@ namespace TaskManager.App
         static void Main(string[] args)
         {
             //main program here
-
-            //test for initializing table
             var repository = new TaskRepository();
             repository.CreateTableIfNotExists();
+            bool keepGoing = true;
 
-            //test for creating a new task and adding it to the repository created
-            var task = new TaskItem()
+            while (keepGoing)
             {
-              Title = "Buy milk",
-              Description = "Go to the store buy milk"
-            };
-            repository.AddTask(task);
-
-            //test for the display of getalltasks method
-            var tasks = repository.GetAllTasks();
-            Console.WriteLine("These are your tasks:\n");
-            foreach(var t in tasks)
-            {
-                Console.WriteLine($"Id-{t.Id} - {t.Title}\nDescription: {t.Description}\nStatus: {t.Status}\n");
+                ShowMenu();
+                return;
             }
+            //User methods
 
-            //test for markasdone method
-            if (tasks.Count > 0)
+            static void ShowMenu()
             {
-                repository.MarkAsDone(tasks[0].Id);
-            }
-
-            //testing deleteTask method
-            repository.DeleteTask(tasks[1].Id);
-
-            //calling get all tasks again to test if markasdone is working
-            tasks = repository.GetAllTasks();
-            Console.WriteLine("These are your tasks:\n");
-            foreach(var t in tasks)
-            {
-                Console.WriteLine($"Id-{t.Id} - {t.Title}\nDescription: {t.Description}\nStatus: {t.Status}\n");
+                Console.WriteLine($"---Task Manager---"
+                +"\nHere are your options:"+
+                "\n1- Add a task"+
+                "\n2- Complete a task"+
+                "\n3- Check your tasks"+
+                "\n4- Delete a task"+
+                "\n5- Quit");
             }
         }
     }

@@ -6,8 +6,13 @@
 - [x] List all tasks (without status)
 - [x] Show status in the task list
 - [x] Mark task as done
-- [ ] Delete a task
-- [ ] Build menu to wire all operations for user
+- [x] Delete a task
+- [x] Add show menu method
+- [ ] Create user input validation
+- [ ] Add "Add task" handler
+- [ ] Add "List tasks" handler
+- [ ] Add "Mark as done" handler
+- [ ] Add "Delete task" handler
 
 ## Post-MVP
 - [ ] Mark task as in progress
