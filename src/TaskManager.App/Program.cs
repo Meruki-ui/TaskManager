@@ -20,7 +20,7 @@ namespace TaskManager.App
 
                 switch(userOption)
                 {
-                    case 1: HandleAddTask(); break;
+                    case 1: HandleAddTask(repository); break;
                     case 2: HandleMarkAsDone(); break;
                     case 3: HandleGetAllTasks(); break;
                     case 4: HandleDeleteTask(); break;
@@ -33,7 +33,7 @@ namespace TaskManager.App
 
             static void ShowMenu()
             {
-                Console.WriteLine($"---Task Manager---"
+                Console.WriteLine($"\n---Task Manager---"
                 +"\nHere are your options:"+
                 "\n1- Add a task"+
                 "\n2- Complete a task"+
@@ -66,7 +66,7 @@ namespace TaskManager.App
                     }
                 }                
             }
-            static bool UserInputText(string prompt, out string inputResult)
+            static bool UserInputText(string prompt, out string inputResult,bool allowEmpty = false)
             {
                 Console.Write(prompt);
                 
@@ -78,7 +78,12 @@ namespace TaskManager.App
                         inputResult = "";
                         return false;
                     }
-                    else if (!string.IsNullOrWhiteSpace(userInput))
+                    if (allowEmpty)
+                    {
+                        inputResult = userInput ?? "";
+                        return true;
+                    }
+                    if (!string.IsNullOrWhiteSpace(userInput))
                     {
                         inputResult = userInput ?? "";
                         return true;
@@ -90,9 +95,37 @@ namespace TaskManager.App
                 }    
             }
 
-            static void HandleAddTask()
+            static void HandleAddTask(TaskRepository repository)
             {
-                Console.WriteLine("Not implemented yet.");
+                Console.WriteLine("\nWhat's your new task?");
+                if (!UserInputText("Title: ", out string title, allowEmpty: false))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return;
+                };
+                
+                if (!UserInputText("Description (Optional): ", out string description, allowEmpty: true))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return;
+                };
+
+                Console.WriteLine($"\nTask - {title}\nDescription - {description}");
+                UserInputNumber("Add task?\n1. Yes\n2. No\nType here: ", out int confirmAddTask);
+                if (confirmAddTask == 2)
+                {
+                    Console.WriteLine("Cancelled operation");
+                    return;
+                }
+                
+                TaskItem newTask = new TaskItem() 
+                {
+                    Title = title,
+                    Description = description
+                };
+                repository.AddTask(newTask);
+                Console.WriteLine("Task added successfully!");
+
             }
             static void HandleMarkAsDone()
             {
