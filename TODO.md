@@ -10,7 +10,7 @@
 - [x] Add show menu method
 - [x] Create user input validation
 - [x] Add "Add task" handler
-- [ ] Add "List tasks" handler
+- [x] Add "List tasks" handler
 - [ ] Add "Mark as done" handler
 - [ ] Add "Delete task" handler
 

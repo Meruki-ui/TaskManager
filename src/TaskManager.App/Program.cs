@@ -22,7 +22,7 @@ namespace TaskManager.App
                 {
                     case 1: HandleAddTask(repository); break;
                     case 2: HandleMarkAsDone(); break;
-                    case 3: HandleGetAllTasks(); break;
+                    case 3: HandleGetAllTasks(repository); break;
                     case 4: HandleDeleteTask(); break;
                     case 5: keepGoing = false; break;
                     default: Console.WriteLine("Invalid option"); break;
@@ -131,9 +131,21 @@ namespace TaskManager.App
             {
                 Console.WriteLine("Not implemented yet.");
             }
-            static void HandleGetAllTasks()
+            static void HandleGetAllTasks(TaskRepository repository)
             {
-                Console.WriteLine("Not implemented yet.");
+                var taskList = repository.GetAllTasks();
+
+                foreach (var task in taskList)
+                {
+                    string statusText = task.Status switch
+                    {
+                        0 => "Pending",
+                        1 => "Doing",
+                        2 => "Done",
+                        _ => "Unknow",
+                    };
+                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}");
+                }
             }
             static void HandleDeleteTask()
             {
