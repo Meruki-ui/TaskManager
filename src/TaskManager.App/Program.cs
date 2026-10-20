@@ -21,7 +21,7 @@ namespace TaskManager.App
                 switch(userOption)
                 {
                     case 1: HandleAddTask(repository); break;
-                    case 2: HandleMarkAsDone(); break;
+                    case 2: HandleMarkAsDone(repository); break;
                     case 3: HandleGetAllTasks(repository); break;
                     case 4: HandleDeleteTask(); break;
                     case 5: keepGoing = false; break;
@@ -114,7 +114,7 @@ namespace TaskManager.App
                 UserInputNumber("Add task?\n1. Yes\n2. No\nType here: ", out int confirmAddTask);
                 if (confirmAddTask == 2)
                 {
-                    Console.WriteLine("Cancelled operation");
+                    Console.WriteLine("Cancelled operation.");
                     return;
                 }
                 
@@ -127,10 +127,45 @@ namespace TaskManager.App
                 Console.WriteLine("Task added successfully!");
 
             }
-            static void HandleMarkAsDone()
+            static void HandleMarkAsDone(TaskRepository repository)
             {
-                Console.WriteLine("Not implemented yet.");
+
+                HandleGetAllTasks(repository);
+
+                if (!UserInputNumber("Choose one task to mark as done by ID: ", out int inputResult))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return;
+                }
+
+                var taskList = repository.GetAllTasks();
+
+                bool found = false;
+
+                foreach (var task in taskList)
+                {
+                    if (inputResult == task.Id)
+                    {
+                        repository.MarkAsDone(inputResult);
+                        found = true;
+                        break;
+                    } 
+                }
+                
+                if (found)
+                {
+                    Console.WriteLine("Task marked as done!");
+                }
+                else
+                {
+                   Console.WriteLine("No matching ID was found."); 
+                }
+
+                Console.WriteLine("Press any key to return to menu.");
+                Console.ReadKey();
             }
+            
+
             static void HandleGetAllTasks(TaskRepository repository)
             {
                 var taskList = repository.GetAllTasks();
@@ -144,7 +179,7 @@ namespace TaskManager.App
                         2 => "Done",
                         _ => "Unknow",
                     };
-                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}");
+                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}\n");
                 }
             }
             static void HandleDeleteTask()

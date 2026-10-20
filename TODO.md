@@ -11,7 +11,7 @@
 - [x] Create user input validation
 - [x] Add "Add task" handler
 - [x] Add "List tasks" handler
-- [ ] Add "Mark as done" handler
+- [x] Add "Mark as done" handler
 - [ ] Add "Delete task" handler
 
 ## Post-MVP
