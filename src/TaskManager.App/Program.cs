@@ -23,7 +23,7 @@ namespace TaskManager.App
                     case 1: HandleAddTask(repository); break;
                     case 2: HandleMarkAsDone(repository); break;
                     case 3: HandleGetAllTasks(repository); break;
-                    case 4: HandleDeleteTask(); break;
+                    case 4: HandleDeleteTask(repository); break;
                     case 5: keepGoing = false; break;
                     default: Console.WriteLine("Invalid option"); break;
                 }
@@ -182,9 +182,46 @@ namespace TaskManager.App
                     Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}\n");
                 }
             }
-            static void HandleDeleteTask()
+            static void HandleDeleteTask(TaskRepository repository)
             {
-                Console.WriteLine("Not implemented yet.");
+                HandleGetAllTasks(repository);
+
+                if (!UserInputNumber("Choose a task to delete by ID: ", out int inputResult))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return;
+                }
+                var taskList = repository.GetAllTasks();
+
+                bool found = false;
+
+                foreach (var task in taskList)
+                {
+                    if(inputResult == task.Id)
+                    {
+                        found = true;
+                        Console.WriteLine($"Are you sure you want to delete '{task.Title}'?");
+                        if (!UserInputNumber("1. Yes\n2. No\n", out int confirmDelete))
+                        {
+                            return;
+                        }
+                        if (confirmDelete != 1)
+                        {
+                            Console.WriteLine("Cancelled operation.");
+                            return;
+                        }
+
+                        repository.DeleteTask(inputResult);
+                        Console.WriteLine("Task deleted successfully. Press any key to return to menu.");
+                        Console.ReadKey();
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    Console.WriteLine("No matching ID was found. Press any key to return to menu.");
+                    Console.ReadKey();
+                }
             }
         }
     }
