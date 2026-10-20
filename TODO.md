@@ -12,7 +12,7 @@
 - [x] Add "Add task" handler
 - [x] Add "List tasks" handler
 - [x] Add "Mark as done" handler
-- [ ] Add "Delete task" handler
+- [x] Add "Delete task" handler
 
 ## Post-MVP
 - [ ] Mark task as in progress
