@@ -15,7 +15,7 @@ namespace TaskManager.App
 
             while (keepGoing)
             {
-                ShowMenu();
+                ShowMenu(repository);
                 if (!UserInputNumber("Choose an option: ", out int userOption)) return;
 
                 switch(userOption)
@@ -31,10 +31,12 @@ namespace TaskManager.App
             }
             //User methods
 
-            static void ShowMenu()
+            static void ShowMenu(TaskRepository repository)
             {
-                Console.WriteLine($"\n---Task Manager---"
-                +"\nHere are your options:"+
+                int pendingCount = repository.PendingTasks();
+                Console.WriteLine($"\n---Task Manager---"+
+                $"\nYou have {pendingCount} pending quests"+
+                "\nHere are your options:"+
                 "\n1- Add a task"+
                 "\n2- Complete a task"+
                 "\n3- Check your tasks"+

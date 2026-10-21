@@ -19,7 +19,7 @@
 - [ ] Un-mark a task
 - [ ] Mark multiple tasks at once
 - [ ] Filter tasks by status
-- [ ] Count of pending tasks
+- [x] Count of pending tasks
 - [ ] Clear completed tasks
 - [ ] Add level of priority in tasks
 - [ ] Add date fields to tasks (CreatedAt, DueDate, CompletedAt)

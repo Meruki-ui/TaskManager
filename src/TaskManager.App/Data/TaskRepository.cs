@@ -101,5 +101,21 @@ public class TaskRepository
             deleteTaskCommand.ExecuteNonQuery();
         }
     }
+
+    public int PendingTasks()
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var pendingTaskCommand = new SqliteCommand();
+            pendingTaskCommand.Connection = connection;
+            pendingTaskCommand.CommandText = "SELECT COUNT(*) FROM Tasks WHERE Status = 0";
+
+            int pendingTasksCount = Convert.ToInt32(pendingTaskCommand.ExecuteScalar());
+
+            
+            return pendingTasksCount;
+        }
+    }
 }
  
