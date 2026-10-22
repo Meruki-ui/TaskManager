@@ -18,7 +18,7 @@
 - [ ] Mark task as in progress
 - [ ] Un-mark a task
 - [ ] Mark multiple tasks at once
-- [ ] Filter tasks by status
+- [x] Filter tasks by status
 - [x] Count of pending tasks
 - [ ] Clear completed tasks
 - [ ] Add level of priority in tasks

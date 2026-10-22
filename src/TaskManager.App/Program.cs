@@ -22,7 +22,7 @@ namespace TaskManager.App
                 {
                     case 1: HandleAddTask(repository); break;
                     case 2: HandleMarkAsDone(repository); break;
-                    case 3: HandleGetAllTasks(repository); break;
+                    case 3: HandleViewTasks(repository); break;
                     case 4: HandleDeleteTask(repository); break;
                     case 5: keepGoing = false; break;
                     default: Console.WriteLine("Invalid option"); break;
@@ -134,7 +134,7 @@ namespace TaskManager.App
 
                 HandleGetAllTasks(repository);
 
-                if (!UserInputNumber("Choose one task to mark as done by ID: ", out int inputResult))
+                if (!UserInputNumber("\nChoose one task to mark as done by ID: ", out int inputResult))
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;
@@ -166,6 +166,30 @@ namespace TaskManager.App
                 Console.WriteLine("Press any key to return to menu.");
                 Console.ReadKey();
             }
+
+            static void HandleViewTasks(TaskRepository repository)
+            {
+                if(!UserInputNumber("\n1. View all tasks"+
+                "\n2. Filter tasks\n", out int userOption))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return; 
+                }
+
+                switch (userOption)
+                {
+                    case 1: 
+                        HandleGetAllTasks(repository); 
+                        break;
+                    case 2: 
+                        HandleGetTaskByStatus(repository); 
+                        break;
+                    default: 
+                        Console.WriteLine("Invalid option. Press any key to return");
+                        Console.ReadKey(); 
+                        break;
+                }
+            }
             
 
             static void HandleGetAllTasks(TaskRepository repository)
@@ -183,7 +207,57 @@ namespace TaskManager.App
                     };
                     Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}\n");
                 }
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
             }
+
+            static void HandleGetTaskByStatus(TaskRepository repository)
+            {
+                Console.WriteLine("Filter tasks by: ");
+                if (!UserInputNumber("\n1. Pending\n2. Doing\n3. Done\n", out int status))
+                {
+                    Console.WriteLine("Cancelled operation.");
+                    return;
+                }
+
+                switch (status)
+                {
+                    case 1: status = 0; break;
+                    case 2: status = 1; break;
+                    case 3: status = 2; break;
+                    default: 
+                        Console.WriteLine("Invalid option. Press any key to continue");
+                        Console.ReadKey(); 
+                        break;
+                }
+                
+                var taskList = repository.GetTaskByStatus(status);
+
+                if (taskList.Count == 0)
+                {
+                    Console.WriteLine("No task found with that status. Press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                else
+                {
+                    foreach (var task in taskList)
+                    {
+                        string statusText = task.Status switch
+                        {
+                            0 => "Pending",
+                            1 => "Doing",
+                            2 => "Done",
+                            _ => "Unknow",
+                        };
+                        Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description ?? "None"}\n");
+                    }
+                    Console.WriteLine("Press any button to return.");
+                    Console.ReadKey();
+                }                
+            }
+
             static void HandleDeleteTask(TaskRepository repository)
             {
                 HandleGetAllTasks(repository);
