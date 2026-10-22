@@ -16,7 +16,7 @@
 
 ## Post-MVP
 - [x] Mark task as in progress
-- [ ] Un-mark a task
+- [x] Un-mark a task
 - [ ] Mark multiple tasks at once
 - [x] Filter tasks by status
 - [x] Count of pending tasks

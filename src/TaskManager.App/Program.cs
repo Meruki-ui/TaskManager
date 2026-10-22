@@ -151,13 +151,13 @@ namespace TaskManager.App
                     if (inputResult == task.Id)
                     {
                         found = true;
-                        if (!UserInputNumber("\nUpgrade task:\n1. In progress\n2. Done\n", out int newStatus))
+                        if (!UserInputNumber("\nUpgrade task:\n0. In progress\n1. In progress\n2. Done\n", out int newStatus))
                         {
                             Console.WriteLine("Cancelled operation.");
                             return;
                         }
 
-                        if (newStatus != 1 && newStatus != 2)
+                        if (newStatus != 1 && newStatus != 2 && newStatus != 0)
                         {
                             Console.WriteLine("Invalid option. Press any key to return.");
                             Console.ReadLine();
