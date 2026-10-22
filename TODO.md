@@ -15,7 +15,7 @@
 - [x] Add "Delete task" handler
 
 ## Post-MVP
-- [ ] Mark task as in progress
+- [x] Mark task as in progress
 - [ ] Un-mark a task
 - [ ] Mark multiple tasks at once
 - [x] Filter tasks by status

@@ -21,7 +21,7 @@ namespace TaskManager.App
                 switch(userOption)
                 {
                     case 1: HandleAddTask(repository); break;
-                    case 2: HandleMarkAsDone(repository); break;
+                    case 2: HandleUpdateTask(repository); break;
                     case 3: HandleViewTasks(repository); break;
                     case 4: HandleDeleteTask(repository); break;
                     case 5: keepGoing = false; break;
@@ -38,7 +38,7 @@ namespace TaskManager.App
                 $"\nYou have {pendingCount} pending quests"+
                 "\nHere are your options:"+
                 "\n1- Add a task"+
-                "\n2- Complete a task"+
+                "\n2- Update a task"+
                 "\n3- Check your tasks"+
                 "\n4- Delete a task"+
                 "\n5- Quit");
@@ -129,12 +129,14 @@ namespace TaskManager.App
                 Console.WriteLine("Task added successfully!");
 
             }
-            static void HandleMarkAsDone(TaskRepository repository)
+
+
+            static void HandleUpdateTask(TaskRepository repository)
             {
 
                 HandleGetAllTasks(repository);
 
-                if (!UserInputNumber("\nChoose one task to mark as done by ID: ", out int inputResult))
+                if (!UserInputNumber("\nChoose one task to update by ID: ", out int inputResult))
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;
@@ -148,15 +150,29 @@ namespace TaskManager.App
                 {
                     if (inputResult == task.Id)
                     {
-                        repository.MarkAsDone(inputResult);
                         found = true;
+                        if (!UserInputNumber("\nUpgrade task:\n1. In progress\n2. Done\n", out int newStatus))
+                        {
+                            Console.WriteLine("Cancelled operation.");
+                            return;
+                        }
+
+                        if (newStatus != 1 && newStatus != 2)
+                        {
+                            Console.WriteLine("Invalid option. Press any key to return.");
+                            Console.ReadLine();
+                            return;
+                        }
+                        
+                        repository.UpdateTaskStatus(inputResult, newStatus);
+                        
                         break;
                     } 
                 }
                 
                 if (found)
                 {
-                    Console.WriteLine("Task marked as done!");
+                    Console.WriteLine("Task updated successfully!");
                 }
                 else
                 {
@@ -262,7 +278,7 @@ namespace TaskManager.App
             {
                 HandleGetAllTasks(repository);
 
-                if (!UserInputNumber("Choose a task to delete by ID: ", out int inputResult))
+                if (!UserInputNumber("\nChoose a task to delete by ID: ", out int inputResult))
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;

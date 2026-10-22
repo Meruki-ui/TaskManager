@@ -103,17 +103,18 @@ public class TaskRepository
         }
     }
 
-    public void MarkAsDone(int id)
+    public void UpdateTaskStatus(int id, int newStatus)
     {
         using (var connection = new SqliteConnection(_connectionString))
         {
             connection.Open();
-            var markDoneCommand = new SqliteCommand();
-            markDoneCommand.Connection = connection;
-            markDoneCommand.CommandText = "UPDATE Tasks SET Status = 2 WHERE Id = $id";
+            var updateTaskCommand = new SqliteCommand();
+            updateTaskCommand.Connection = connection;
+            updateTaskCommand.CommandText = "UPDATE Tasks SET Status = $newStatus WHERE Id = $id";
 
-            markDoneCommand.Parameters.AddWithValue("$id", id);
-            markDoneCommand.ExecuteNonQuery();
+            updateTaskCommand.Parameters.AddWithValue("$id", id);
+            updateTaskCommand.Parameters.AddWithValue("$newStatus", newStatus);
+            updateTaskCommand.ExecuteNonQuery();
         }
     }
 
