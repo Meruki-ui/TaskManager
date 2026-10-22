@@ -74,6 +74,35 @@ public class TaskRepository
         }
     }
 
+    public List<TaskItem> GetTaskByStatus(int status)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var getByStatusCommand = new SqliteCommand();
+            getByStatusCommand.Connection = connection;
+            getByStatusCommand.CommandText = "SELECT * FROM Tasks WHERE Status = $status";
+            getByStatusCommand.Parameters.AddWithValue("$status", status);
+            using var reader = getByStatusCommand.ExecuteReader(); 
+
+            var taskByStatus = new List<TaskItem>();
+
+            while (reader.Read())
+            {
+                TaskItem taskItem = new TaskItem()
+                {
+                  Id = reader.GetInt32(0),
+                  Title = reader.GetString(1),
+                  Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                  Status = reader.GetInt32(3)
+                };
+
+                taskByStatus.Add(taskItem);
+            }
+            return taskByStatus;
+        }
+    }
+
     public void MarkAsDone(int id)
     {
         using (var connection = new SqliteConnection(_connectionString))
