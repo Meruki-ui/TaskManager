@@ -132,6 +132,20 @@ public class TaskRepository
         }
     }
 
+    public void ClearCompletedTask(int status)
+    {
+        using (var connection = new SqliteConnection(_connectionString))
+        {
+            connection.Open();
+            var clearCompletedCommand = new SqliteCommand();
+            clearCompletedCommand.Connection = connection;
+            clearCompletedCommand.CommandText = "DELETE FROM Tasks WHERE Status = $status";
+
+            clearCompletedCommand.Parameters.AddWithValue("$status", status);
+            clearCompletedCommand.ExecuteNonQuery();
+        }
+    }
+
     public int PendingTasks()
     {
         using (var connection = new SqliteConnection(_connectionString))

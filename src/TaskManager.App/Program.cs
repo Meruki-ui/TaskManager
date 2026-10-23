@@ -24,7 +24,8 @@ namespace TaskManager.App
                     case 2: HandleUpdateTask(repository); break;
                     case 3: HandleViewTasks(repository); break;
                     case 4: HandleDeleteTask(repository); break;
-                    case 5: keepGoing = false; break;
+                    case 5: HandleClearCompletedTasks(repository); break;
+                    case 6: keepGoing = false; break;
                     default: Console.WriteLine("Invalid option"); break;
                 }
 
@@ -41,7 +42,8 @@ namespace TaskManager.App
                 "\n2- Update a task"+
                 "\n3- Check your tasks"+
                 "\n4- Delete a task"+
-                "\n5- Quit");
+                "\n5- Clear completed tasks"+
+                "\n6- Quit");
             }
 
             
@@ -151,7 +153,7 @@ namespace TaskManager.App
                     if (inputResult == task.Id)
                     {
                         found = true;
-                        if (!UserInputNumber("\nUpgrade task:\n0. In progress\n1. In progress\n2. Done\n", out int newStatus))
+                        if (!UserInputNumber("\nUpgrade task:\n0. Pending\n1. In progress\n2. Done\n", out int newStatus))
                         {
                             Console.WriteLine("Cancelled operation.");
                             return;
@@ -313,6 +315,43 @@ namespace TaskManager.App
                 {
                     Console.WriteLine("No matching ID was found. Press any key to return to menu.");
                     Console.ReadKey();
+                }
+            }
+
+            static void HandleClearCompletedTasks(TaskRepository repository)
+            {
+                var taskList = repository.GetTaskByStatus(2);
+
+                if (taskList.Count == 0)
+                {
+                    Console.WriteLine("No task completed to clear. Press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                foreach(var task in taskList)
+                {
+                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: Done\nDesc: {task.Description ?? "None"}\n");
+                }
+                if(!UserInputNumber("\nClear these tasks?\n1. Yes\n2. No\n", out int inputResult))
+                {
+                    Console.WriteLine("Cancelled operation. Press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                if (inputResult == 1)
+                {
+                    repository.ClearCompletedTask(2);
+                    Console.WriteLine("Completed tasks cleared successfully. Press any key to return.");
+                    Console.ReadKey();
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Returning to menu. Press any key to return.");
+                    Console.ReadKey();
+                    return;
                 }
             }
         }
