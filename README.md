@@ -40,31 +40,35 @@ A fully functional console-based Task Manager built in C# with SQLite. This appl
    ```bash
    git clone https://github.com/Meruki-ui/TaskManager.git
    cd TaskManager
+   ```
 
 2. Run the application:
     ```bash
     dotnet run --project src/TaskManager.App
+    ```
 
 
 ## What I Learned
 Building this project was a massive step up from a basic calculator. I learned how to:
 
-Architect a C# application using Separation of Concerns (Models, Data/Repository, and UI layers).
+- Architect a C# application using Separation of Concerns (Models, Data/Repository, and UI layers).
 
-Perform full CRUD operations using raw SQLite commands via ADO.NET.
+- Perform full CRUD operations using raw SQLite commands via ADO.NET.
 
-Use SQL parameters to prevent SQL injection.
+- Use SQL parameters to prevent SQL injection.
 
-Handle schema migrations using ALTER TABLE to add new features (Priority and Dates) to an existing database.
+- Handle schema migrations using ALTER TABLE to add new features (Priority and Dates) to an existing database.
 
-Validate user input safely, including strict DateTime.TryParseExact formatting and null-handling for database reads (IsDBNull).
+- Validate user input safely, including strict DateTime.TryParseExact formatting and null-handling for database reads (IsDBNull).
 
-Refactor redundant code (combining MarkAsDone and MarkAsInProgress into a single UpdateTaskStatus method).
+- Refactor redundant code (combining MarkAsDone and MarkAsInProgress into a single UpdateTaskStatus method).
 
 ## Author
 Melquisedeque Fialho
 
 - Linkedin: [www.linkedin.com/in/melquisedeque-oliveira-253ba42b8]
+(https://www.linkedin.com/in/melquisedeque-oliveira-253ba42b8)
+
 - GitHub: @Meruki-ui
 
 ---
