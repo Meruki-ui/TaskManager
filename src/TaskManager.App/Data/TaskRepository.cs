@@ -38,10 +38,11 @@ public class TaskRepository
             connection.Open();
             var addCommand = new SqliteCommand();
             addCommand.Connection = connection;
-            addCommand.CommandText = "INSERT INTO Tasks (Title, Description) VALUES ($title, $description)";
+            addCommand.CommandText = "INSERT INTO Tasks (Title, Description, Priority) VALUES ($title, $description, $priority)";
             
             addCommand.Parameters.AddWithValue("$title", task.Title);
             addCommand.Parameters.AddWithValue("$description", task.Description);
+            addCommand.Parameters.AddWithValue("$priority", task.Priority);
             addCommand.ExecuteNonQuery();
         }
     }
@@ -65,7 +66,8 @@ public class TaskRepository
                   Id = reader.GetInt32(0),
                   Title = reader.GetString(1),
                   Description = reader.IsDBNull(2) ? null : reader.GetString(2),
-                  Status = reader.GetInt32(3)
+                  Status = reader.GetInt32(3),
+                  Priority = reader.GetInt32(4)
                 };
 
                 tasks.Add(taskItem);
@@ -94,7 +96,8 @@ public class TaskRepository
                   Id = reader.GetInt32(0),
                   Title = reader.GetString(1),
                   Description = reader.IsDBNull(2) ? null : reader.GetString(2),
-                  Status = reader.GetInt32(3)
+                  Status = reader.GetInt32(3),
+                  Priority = reader.GetInt32(4)
                 };
 
                 taskByStatus.Add(taskItem);

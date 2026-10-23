@@ -17,9 +17,8 @@
 ## Post-MVP
 - [x] Mark task as in progress
 - [x] Un-mark a task
-- [ ] Mark multiple tasks at once
 - [x] Filter tasks by status
 - [x] Count of pending tasks
 - [x] Clear completed tasks
-- [ ] Add level of priority in tasks
+- [x] Add level of priority in tasks
 - [ ] Add date fields to tasks (CreatedAt, DueDate, CompletedAt)

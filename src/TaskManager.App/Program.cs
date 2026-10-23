@@ -106,26 +106,59 @@ namespace TaskManager.App
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;
-                };
+                }
                 
                 if (!UserInputText("Description (Optional): ", out string description, allowEmpty: true))
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;
-                };
+                }
+                
+                int priority;
+                while (true)
+                {
+                    if (!UserInputNumber("Priority: \n1. Low\n2. Medium\n3.High\n", out priority))
+                    {
+                        Console.WriteLine("Cancelled operation.");
+                        return;
+                    }
 
-                Console.WriteLine($"\nTask - {title}\nDescription - {description}");
-                UserInputNumber("Add task?\n1. Yes\n2. No\nType here: ", out int confirmAddTask);
-                if (confirmAddTask == 2)
+                    if (priority >= 1 && priority <= 3)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option. Choose 1, 2 or 3.");
+                    }
+                }
+
+                string priorityText = priority switch
+                    {
+                        1 => "Low",
+                        2 => "Medium",
+                        3 => "High",
+                        _ => "Unknown"
+                    };
+
+                Console.WriteLine($"\nTask - {title}\nDescription - {description}\nPriority - {priorityText}");
+                if(!UserInputNumber("Add task?\n1. Yes\n2. No\nType here: ", out int confirmAddTask))
+                {
+                    return;
+                }
+                if (confirmAddTask != 1)
                 {
                     Console.WriteLine("Cancelled operation.");
                     return;
                 }
+
+                
                 
                 TaskItem newTask = new TaskItem() 
                 {
                     Title = title,
-                    Description = description
+                    Description = description,
+                    Priority = priority
                 };
                 repository.AddTask(newTask);
                 Console.WriteLine("Task added successfully!");
@@ -153,10 +186,11 @@ namespace TaskManager.App
                     if (inputResult == task.Id)
                     {
                         found = true;
+                        Console.WriteLine($"Task selected: {task.Title} - Id: {task.Id}");
                         if (!UserInputNumber("\nUpgrade task:\n0. Pending\n1. In progress\n2. Done\n", out int newStatus))
                         {
                             Console.WriteLine("Cancelled operation.");
-                            return;
+                            return; 
                         }
 
                         if (newStatus != 1 && newStatus != 2 && newStatus != 0)
@@ -223,7 +257,16 @@ namespace TaskManager.App
                         2 => "Done",
                         _ => "Unknow",
                     };
-                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description}\n");
+
+                    string priorityText = task.Priority switch
+                    {
+                        1 => "Low",
+                        2 => "Medium",
+                        3 => "High",
+                        _ => "Unknown"
+                    };
+
+                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText} - Priority: {priorityText}\nDesc: {task.Description}\n");
                 }
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
@@ -269,7 +312,14 @@ namespace TaskManager.App
                             2 => "Done",
                             _ => "Unknow",
                         };
-                        Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText}\nDesc: {task.Description ?? "None"}\n");
+                        string priorityText = task.Priority switch
+                        {
+                            1 => "Low",
+                            2 => "Medium",
+                            3 => "High",
+                            _ => "Unknown"
+                        };
+                        Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText} - Priority: {priorityText}\nDesc: {task.Description ?? "None"}\n");
                     }
                     Console.WriteLine("Press any button to return.");
                     Console.ReadKey();
