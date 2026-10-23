@@ -140,8 +140,33 @@ namespace TaskManager.App
                         3 => "High",
                         _ => "Unknown"
                     };
+                
 
-                Console.WriteLine($"\nTask - {title}\nDescription - {description}\nPriority - {priorityText}");
+                string? dueDate;
+                while (true){
+                    if (!UserInputText("Define due date (YYYY-MM-DD, leave blank for none): ",out dueDate, allowEmpty: true))
+                    {
+                        Console.WriteLine("Cancelled operation.");
+                        return;
+                    }
+                    if (string.IsNullOrWhiteSpace(dueDate))
+                    {
+                        dueDate = null;
+                        break;
+                    }
+                    if (DateTime.TryParseExact(
+                        dueDate,
+                        "yyyy-MM-dd",
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None,
+                        out _))                       
+                    {
+                        break;
+                    }
+                    Console.WriteLine("Invalid date format, please use YYYY-MM-DD (e.g., 2026-09-06).");
+                }
+
+                Console.WriteLine($"\nTask - {title}\nDescription - {description ?? "None"}\nPriority - {priorityText}\nDue date is set to: {dueDate ?? "None"}");
                 if(!UserInputNumber("Add task?\n1. Yes\n2. No\nType here: ", out int confirmAddTask))
                 {
                     return;
@@ -158,7 +183,8 @@ namespace TaskManager.App
                 {
                     Title = title,
                     Description = description,
-                    Priority = priority
+                    Priority = priority,
+                    DueDate = string.IsNullOrWhiteSpace(dueDate) ? null : dueDate
                 };
                 repository.AddTask(newTask);
                 Console.WriteLine("Task added successfully!");
@@ -265,8 +291,22 @@ namespace TaskManager.App
                         3 => "High",
                         _ => "Unknown"
                     };
-
-                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText} - Priority: {priorityText}\nDesc: {task.Description}\n");
+                    
+                    if (string.IsNullOrWhiteSpace(task.CompletedAt))
+                    {
+                        Console.WriteLine($"Id. {task.Id} - {task.Title}"+
+                        $"\nStatus: {statusText} - Priority: {priorityText}"+
+                        $"\nDesc: {task.Description ?? "None"}"+
+                        $"\nDue date is set to: {task.DueDate ?? "None"}\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Id. {task.Id} - {task.Title}"+
+                        $"\nStatus: {statusText} - Priority: {priorityText}"+
+                        $"\nDesc: {task.Description ?? "None"}"+
+                        $"\nDue date is set to: {task.DueDate ?? "None"}"+
+                        $"\nTask completed on: {task.CompletedAt.Substring(0, 10)}\n");
+                    }
                 }
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
@@ -319,7 +359,21 @@ namespace TaskManager.App
                             3 => "High",
                             _ => "Unknown"
                         };
-                        Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: {statusText} - Priority: {priorityText}\nDesc: {task.Description ?? "None"}\n");
+                        if (string.IsNullOrWhiteSpace(task.CompletedAt))
+                        {
+                            Console.WriteLine($"Id. {task.Id} - {task.Title}"+
+                            $"\nStatus: {statusText} - Priority: {priorityText}"+
+                            $"\nDesc: {task.Description ?? "None"}"+
+                            $"\nDue date is set to: {task.DueDate ?? "None"}\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Id. {task.Id} - {task.Title}"+
+                            $"\nStatus: {statusText} - Priority: {priorityText}"+
+                            $"\nDesc: {task.Description ?? "None"}"+
+                            $"\nDue date is set to: {task.DueDate ?? "None"}"+
+                            $"\nTask completed on: {task.CompletedAt.Substring(0, 10)}\n");
+                        }
                     }
                     Console.WriteLine("Press any button to return.");
                     Console.ReadKey();
@@ -381,9 +435,18 @@ namespace TaskManager.App
 
                 foreach(var task in taskList)
                 {
-                    Console.WriteLine($"Id. {task.Id} - {task.Title}\nStatus: Done\nDesc: {task.Description ?? "None"}\n");
+                    {
+                        string completedText = string.IsNullOrWhiteSpace(task.CompletedAt)
+                            ? "Unknown date"
+                            : task.CompletedAt.Substring(0, 10);
+
+                        Console.WriteLine($"Id. {task.Id} - {task.Title}"+
+                        $"\nDesc: {task.Description ?? "None"}"+
+                        $"\nDue date is set to: {task.DueDate ?? "None"}"+
+                        $"\nTask completed on: {completedText}\n");
+                    }
                 }
-                if(!UserInputNumber("\nClear these tasks?\n1. Yes\n2. No\n", out int inputResult))
+                if(!UserInputNumber("Clear these tasks?\n1. Yes\n2. No\n", out int inputResult))
                 {
                     Console.WriteLine("Cancelled operation. Press any key to return.");
                     Console.ReadKey();

@@ -38,11 +38,13 @@ public class TaskRepository
             connection.Open();
             var addCommand = new SqliteCommand();
             addCommand.Connection = connection;
-            addCommand.CommandText = "INSERT INTO Tasks (Title, Description, Priority) VALUES ($title, $description, $priority)";
+            addCommand.CommandText = "INSERT INTO Tasks (Title, Description, Priority, CreatedAt, DueDate) VALUES ($title, $description, $priority, CURRENT_TIMESTAMP, $dueDate)";
             
             addCommand.Parameters.AddWithValue("$title", task.Title);
             addCommand.Parameters.AddWithValue("$description", task.Description);
             addCommand.Parameters.AddWithValue("$priority", task.Priority);
+            addCommand.Parameters.AddWithValue("$dueDate", task.DueDate ?? (object)DBNull.Value);
+
             addCommand.ExecuteNonQuery();
         }
     }
@@ -67,7 +69,10 @@ public class TaskRepository
                   Title = reader.GetString(1),
                   Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                   Status = reader.GetInt32(3),
-                  Priority = reader.GetInt32(4)
+                  Priority = reader.GetInt32(4),
+                  CreatedAt = reader.IsDBNull(5) ? null : reader.GetString(5),
+                  DueDate = reader.IsDBNull(6) ? null : reader.GetString(6),
+                  CompletedAt = reader.IsDBNull(7) ? null : reader.GetString(7)
                 };
 
                 tasks.Add(taskItem);
@@ -97,7 +102,10 @@ public class TaskRepository
                   Title = reader.GetString(1),
                   Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                   Status = reader.GetInt32(3),
-                  Priority = reader.GetInt32(4)
+                  Priority = reader.GetInt32(4),
+                  CreatedAt = reader.IsDBNull(5) ? null : reader.GetString(5),
+                  DueDate = reader.IsDBNull(6) ? null : reader.GetString(6),
+                  CompletedAt = reader.IsDBNull(7) ? null : reader.GetString(7)
                 };
 
                 taskByStatus.Add(taskItem);
@@ -113,7 +121,13 @@ public class TaskRepository
             connection.Open();
             var updateTaskCommand = new SqliteCommand();
             updateTaskCommand.Connection = connection;
-            updateTaskCommand.CommandText = "UPDATE Tasks SET Status = $newStatus WHERE Id = $id";
+            updateTaskCommand.CommandText = @"UPDATE Tasks
+            SET Status = $newStatus, 
+                CompletedAt = CASE
+                    WHEN $newStatus = 2 THEN CURRENT_TIMESTAMP
+                    ELSE NULL
+                END
+            WHERE Id = $id";
 
             updateTaskCommand.Parameters.AddWithValue("$id", id);
             updateTaskCommand.Parameters.AddWithValue("$newStatus", newStatus);

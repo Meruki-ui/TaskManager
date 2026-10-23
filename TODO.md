@@ -21,4 +21,4 @@
 - [x] Count of pending tasks
 - [x] Clear completed tasks
 - [x] Add level of priority in tasks
-- [ ] Add date fields to tasks (CreatedAt, DueDate, CompletedAt)
+- [x] Add date fields to tasks (CreatedAt, DueDate, CompletedAt)
